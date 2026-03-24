@@ -25,10 +25,13 @@ export function useInfiniteScroll<T>(
         DEFAULT_ITEMS_TO_LOAD,
         isNew ? 0 : items.length,
       );
+      const filteredData = result.data.filter(
+        (item: any) => !('track' in item) || !!item.track,
+      );
       if (isNew) {
-        setItems([...result.data] as T[]);
+        setItems([...filteredData] as T[]);
       } else {
-        setItems([...items, ...result.data] as T[]);
+        setItems([...items, ...filteredData] as T[]);
       }
       setHasMore(result.data.length === DEFAULT_ITEMS_TO_LOAD);
     } catch (e) {
